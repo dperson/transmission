@@ -73,7 +73,7 @@ EOF
     echo "$user" > $auth
     echo "$pass" >> $auth
 
-    chown debian-transmission. $dir/safe*
+    chown debian-transmission. $dir/vpn*
     chmod 0600 $auth
 }
 
