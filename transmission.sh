@@ -133,5 +133,6 @@ else
                 --encryption-preferred --log-error --global-seedratio 2.0 \
                 --incomplete-dir $dir/incomplete --paused --dht --auth \
                 --username "${TRUSER:-admin}" --password "${TRPASSWD:-admin}" \
-                --download-dir $dir/downloads --no-portmap --logfile /dev/stdout
+                --download-dir $dir/downloads --no-portmap --allowed "*" \
+                --logfile /dev/stdout
 fi
