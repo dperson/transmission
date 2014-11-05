@@ -66,8 +66,6 @@ verb 1
 reneg-sec 0
 redirect-gateway def1
 auth-user-pass $auth
-log /dev/stdout
-daemon
 EOF
 
     echo "$user" > $auth
@@ -125,10 +123,11 @@ elif [[ $# -ge 1 ]]; then
     echo "ERROR: command not found: $1"
     exit 13
 else
-    [[ -e $dir/vpn-ca.crt ]] && openvpn --config $dir/vpn.conf
     curl -Ls 'http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
                 gzip -cd > $dir/info/blocklists/bt_level1
     chown debian-transmission. $dir/info/blocklists/bt_level1
+    [[ -e $dir/vpn-ca.crt ]] && openvpn --config $dir/vpn.conf \
+                --log /dev/stdout --daemon
     exec transmission-daemon --foreground  --config-dir $dir/info --blocklist \
                 --encryption-preferred --log-error --global-seedratio 2.0 \
                 --incomplete-dir $dir/incomplete --paused --dht --auth \

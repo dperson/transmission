@@ -64,7 +64,12 @@ Will get you the same settings as
 
 ## VPN
 
-    sudo docker run --name transmission -d dperson/transmission -v \
+NOTE: More than the basic privileges are needed for OpenVPN. With docker 1.2 or
+newer you can use the `--cap-add=NET_ADMIN` option. Earlier versions or using
+fig, you'll have to run it in privileged mode.
+
+    sudo docker run --cap-add=NET_ADMIN --name transmission -d \
+                dperson/transmission -v \
                 "us-east.privateinternetaccess.com;username;password"
 
 # User Feedback
