@@ -133,5 +133,5 @@ else
                 --incomplete-dir $dir/incomplete --paused --dht --auth \
                 --username "${TRUSER:-admin}" --password "${TRPASSWD:-admin}" \
                 --download-dir $dir/downloads --no-portmap --allowed "*" \
-                --tos lowcost --logfile /dev/stdout
+                --logfile /dev/stdout
 fi
