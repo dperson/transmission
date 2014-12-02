@@ -128,6 +128,9 @@ else
     chown debian-transmission. $dir/info/blocklists/bt_level1
     [[ -e $dir/vpn-ca.crt ]] && openvpn --config $dir/vpn.conf \
                 --log /dev/stdout --daemon
+    sed '/peer-socket-tos/d; /"peer/a \
+    "peer-socket-tos": lowcost,
+' $dir/info/settings.json
     exec transmission-daemon --foreground  --config-dir $dir/info --blocklist \
                 --encryption-preferred --log-error --global-seedratio 2.0 \
                 --incomplete-dir $dir/incomplete --paused --dht --auth \
