@@ -11,7 +11,7 @@ RUN TERM=dumb apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys\
     TERM=dumb apt-get install -qqy --no-install-recommends transmission-daemon \
                 openvpn curl && \
     TERM=dumb apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* /tmp/*
 
 # Configure
 COPY transmission.sh /usr/bin/
