@@ -129,13 +129,12 @@ else
     [[ -e $dir/vpn-ca.crt ]] && openvpn --config $dir/vpn.conf \
                 --log /dev/stdout --daemon
     sed '/peer-socket-tos/d; /rpc-username/d; /rpc-password/d; /"peer/a \
-    "peer-socket-tos": "lowcost",\
-    "rpc-username": "'"${TRUSER:-admin}"'",\
-    "rpc-password": "'"${TRPASSWD:-admin}"'",
+    "peer-socket-tos": "lowcost",
 ' $dir/info/settings.json
     exec transmission-daemon --foreground  --config-dir $dir/info --blocklist \
                 --encryption-preferred --log-error --global-seedratio 2.0 \
                 --incomplete-dir $dir/incomplete --paused --dht --auth \
+                --username "${TRUSER:-admin}" --password "${TRPASSWD:-admin}" \
                 --download-dir $dir/downloads --no-portmap --allowed "*" \
                 --logfile /dev/stdout
 fi
