@@ -128,13 +128,15 @@ else
     chown debian-transmission. $dir/info/blocklists/bt_level1
     [[ -e $dir/vpn-ca.crt ]] && openvpn --config $dir/vpn.conf \
                 --log /dev/stdout --daemon
-    sed -i '/peer-socket-tos/d; /"peer-port"/a \
-    "peer-socket-tos": "lowcost",
+    grep -q peer-socket-tos $dir/info/settings.json ||
+        sed -i '/peer-socket-tos/d; /"peer-port"/a \
+    "peer-socket-tos": "lowcost",\
+    "rpc-username": "'"${TRUSER:-admin}"'",\
+    "rpc-password": "'"${TRPASSWD:-admin}"'",
 ' $dir/info/settings.json
-    su -l debian-transmission -c "transmission-daemon --foreground \
+    su -l debian-transmission -s /bin/bash -c "transmission-daemon --foreground\
                 --config-dir $dir/info --blocklist --encryption-preferred \
                 --log-error --logfile /dev/stdout --global-seedratio 2.0 \
                 --incomplete-dir $dir/incomplete --paused --dht --auth \
-                --username '${TRUSER:-admin}' --password '${TRPASSWD:-admin}' \
-                --download-dir $dir/downloads --no-portmap --allowed *"
+                --download-dir $dir/downloads --no-portmap --allowed \\*"
 fi
