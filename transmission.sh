@@ -131,10 +131,10 @@ else
     sed '/peer-socket-tos/d; /peer-port-random-on-start/a \
     "peer-socket-tos": "lowcost",
 ' $dir/info/settings.json
-    exec transmission-daemon --foreground  --config-dir $dir/info --blocklist \
-                --encryption-preferred --log-error --global-seedratio 2.0 \
+    su -l debian-transmission -c "transmission-daemon --foreground \
+                --config-dir $dir/info --blocklist --encryption-preferred \
+                --log-error --logfile /dev/stdout--global-seedratio 2.0 \
                 --incomplete-dir $dir/incomplete --paused --dht --auth \
-                --username "${TRUSER:-admin}" --password "${TRPASSWD:-admin}" \
-                --download-dir $dir/downloads --no-portmap --allowed "*" \
-                --logfile /dev/stdout
+                --username '${TRUSER:-admin}' --password '${TRPASSWD:-admin}' \
+                --download-dir $dir/downloads --no-portmap --allowed \"*\""
 fi
