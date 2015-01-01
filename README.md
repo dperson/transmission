@@ -64,7 +64,7 @@ Will get you the same settings as
 
 ## VPN
 
-NOTE: More than the basic privileges are needed for OpenVPN. With docker 1.2 or
+**NOTE**: More than the basic privileges are needed for OpenVPN. With docker 1.2 or
 newer you can use the `--cap-add=NET_ADMIN` option. Earlier versions or using
 fig, you'll have to run it in privileged mode.
 
