@@ -1,4 +1,4 @@
-[![logo](http://upload.wikimedia.org/wikipedia/commons/2/22/Transmission_logo.jpg)](https://www.transmissionbt.com)
+[![logo](http://blogmmix.ch/sites/default/files/imagecache/gross/6/transmission-bittorrent1.png)](https://www.transmissionbt.com)
 
 # Transmission / OpenVPN
 
