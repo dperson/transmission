@@ -24,8 +24,7 @@ dir="/var/lib/transmission-daemon"
 # Arguments:
 #   timezone) for example EST5EDT
 # Return: the correct zoneinfo file will be symlinked into place
-timezone() {
-    local timezone="${1:-EST5EDT}"
+timezone() { local timezone="${1:-EST5EDT}"
 
     [[ -e /usr/share/zoneinfo/$timezone ]] || {
         echo "ERROR: invalid timezone specified" >&2
@@ -41,12 +40,8 @@ timezone() {
 #   user) user name on VPN
 #   pass) password on VPN
 # Return: configured .ovpn file
-vpn() {
-    local server="$1"
-    local user="$2"
-    local pass="$3"
-    local conf="$dir/vpn.conf"
-    local auth="$dir/vpn.auth"
+vpn() { local server="$1" user="$2" pass="$3" conf="$dir/vpn.conf" \
+            auth="$dir/vpn.auth"
 
     cat > $conf << EOF
 client
@@ -79,8 +74,7 @@ EOF
 # Arguments:
 #   none)
 # Return: Help text
-usage() {
-    local RC=${1:-0}
+usage() { local RC=${1:-0}
 
     echo "Usage: ${0##*/} [-opt] [command]
 Options (fields in '[]' are optional, '<>' are required):
@@ -131,12 +125,11 @@ else
                 --log /dev/stdout --daemon
     grep -q peer-socket-tos $dir/info/settings.json ||
         sed -i '/peer-socket-tos/d; /"peer-port"/a \
-    "peer-socket-tos": "lowcost",
-' $dir/info/settings.json
-    su -l debian-transmission -s /bin/bash -c "transmission-daemon --foreground\
+    "peer-socket-tos": "lowcost",' $dir/info/settings.json
+    exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
-                --log-error --logfile /dev/stdout --global-seedratio 2.0 \
-                --incomplete-dir $dir/incomplete --paused --dht --auth \
+                --log-error --logfile /dev/stdout --global-seedratio 2.0 --dht \
+                --incomplete-dir $dir/incomplete --paused --auth --foreground \
                 --username '${TRUSER:-admin}' --password '${TRPASSWD:-admin}' \
                 --download-dir $dir/downloads --no-portmap --allowed \\*"
 fi
