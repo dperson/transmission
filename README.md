@@ -1,8 +1,8 @@
-[![logo](http://blogmmix.ch/sites/default/files/imagecache/gross/6/transmission-bittorrent1.png)](https://www.transmissionbt.com)
+[![logo](http://blogmmix.ch/sites/default/files/imagecache/gross/6/transmission-bittorrent1.png)](https://www.transmissionbt.com/)
 
-# Transmission / OpenVPN
+# Transmission
 
-Transmission and OpenVPN docker container
+Transmission docker container
 
 # What is Transmission?
 
@@ -12,7 +12,7 @@ a cross-platform back-end.
 # How to use this image
 
 This Transmission container was built to automatically download a level1 host
-filter, and has openvpn available.
+filter (can be used with dperson/openvpn).
 
 ## Hosting a Transmission instance
 
@@ -33,11 +33,6 @@ OR set local storage:
         -h          This help
         -t ""       Configure timezone
                     possible arg: "[timezone]" - zoneinfo timezone for container
-        -v "<server;user;password>" Configure OpenVPN
-                    required arg: "<server>;<user>;<password>"
-                    <server> to connect to
-                    <user> to authenticate as
-                    <password> to authenticate with
 
     The 'command' (if provided and valid) will be run instead of transmission
 
@@ -46,7 +41,6 @@ ENVIROMENT VARIABLES (only available with `docker run`)
  * `TRUSER` - Set the username for transmission auth (default 'admin')
  * `TRPASSWD` - Set the password for transmission auth (default 'admin')
  * `TIMEZONE` - As above, set a zoneinfo timezone, IE `EST5EDT`
- * `VPN` - As above, setup a VPN connection
 
 ## Examples
 
@@ -61,16 +55,6 @@ Will get you the same settings as
     sudo docker exec transmission transmission.sh -T EST5EDT \
                 ls -AlF /etc/localtime
     sudo docker restart transmission
-
-## VPN
-
-**NOTE**: More than the basic privileges are needed for OpenVPN. With docker 1.2 or
-newer you can use the `--cap-add=NET_ADMIN` option. Earlier versions or using
-fig, you'll have to run it in privileged mode.
-
-    sudo docker run --cap-add=NET_ADMIN --name transmission -d \
-                dperson/transmission -v \
-                "us-east.privateinternetaccess.com;username;password"
 
 # User Feedback
 

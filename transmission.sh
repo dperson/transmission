@@ -25,7 +25,6 @@ dir="/var/lib/transmission-daemon"
 #   timezone) for example EST5EDT
 # Return: the correct zoneinfo file will be symlinked into place
 timezone() { local timezone="${1:-EST5EDT}"
-
     [[ -e /usr/share/zoneinfo/$timezone ]] || {
         echo "ERROR: invalid timezone specified" >&2
         return
@@ -34,69 +33,26 @@ timezone() { local timezone="${1:-EST5EDT}"
     ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
 }
 
-### vpn: setup openvpn client
-# Arguments:
-#   server) VPN GW server
-#   user) user name on VPN
-#   pass) password on VPN
-# Return: configured .ovpn file
-vpn() { local server="$1" user="$2" pass="$3" conf="$dir/vpn.conf" \
-            auth="$dir/vpn.auth"
-
-    cat > $conf << EOF
-client
-dev tun
-proto udp
-remote $server 1194
-resolv-retry infinite
-nobind
-persist-key
-persist-tun
-ca $dir/vpn-ca.crt
-tls-client
-remote-cert-tls server
-auth-user-pass
-comp-lzo
-verb 1
-reneg-sec 0
-redirect-gateway def1
-auth-user-pass $auth
-EOF
-
-    echo "$user" > $auth
-    echo "$pass" >> $auth
-
-    chown debian-transmission. $dir/vpn*
-    chmod 0600 $auth
-}
-
 ### usage: Help
 # Arguments:
 #   none)
 # Return: Help text
 usage() { local RC=${1:-0}
-
     echo "Usage: ${0##*/} [-opt] [command]
 Options (fields in '[]' are optional, '<>' are required):
     -h          This help
     -t \"\"       Configure timezone
                 possible arg: \"[timezone]\" - zoneinfo timezone for container
-    -v \"<server;user;password>\" Configure OpenVPN
-                required arg: \"<server>;<user>;<password>\"
-                <server> to connect to
-                <user> to authenticate as
-                <password> to authenticate with
 
 The 'command' (if provided and valid) will be run instead of transmission
 " >&2
     exit $RC
 }
 
-while getopts ":ht:v:" opt; do
+while getopts ":ht:" opt; do
     case "$opt" in
         h) usage ;;
         t) timezone "$OPTARG" ;;
-        v) eval vpn $(sed 's/^\|$/"/g; s/;/" "/g' <<< $OPTARG) ;;
         "?") echo "Unknown option: -$OPTARG"; usage 1 ;;
         ":") echo "No argument value for option: -$OPTARG"; usage 2 ;;
     esac
@@ -104,7 +60,6 @@ done
 shift $(( OPTIND - 1 ))
 
 [[ "${TIMEZONE:-""}" ]] && timezone "$TIMEZONE"
-[[ "${VPN:-""}" ]] && eval vpn $(sed 's/^\|$/"/g; s/;/" "/g' <<< $VPN)
 
 [[ -d $dir/downloads ]] || mkdir -p $dir/downloads
 [[ -d $dir/incomplete ]] || mkdir -p $dir/incomplete
@@ -121,7 +76,6 @@ else
                 gzip -cd > $dir/info/blocklists/bt_level1
     chown debian-transmission. $dir/info/blocklists/bt_level1
     chmod 0777 /dev/stderr /dev/stdout
-    [[ -e $dir/vpn-ca.crt ]] && openvpn --config $dir/vpn.conf \
                 --log /dev/stdout --daemon
     grep -q peer-socket-tos $dir/info/settings.json ||
         sed -i '/peer-socket-tos/d; /"peer-port"/a \
