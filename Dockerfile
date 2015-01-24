@@ -4,7 +4,6 @@ MAINTAINER David Personette <dperson@dperson.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 # Install transmission
-COPY transmission.sh /usr/bin/
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys\
                 976B5901365C5CA1 && \
     echo -n "deb http://ppa.launchpad.net/transmissionbt/ppa/ubuntu" >> \
@@ -15,6 +14,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys\
     apt-get clean && \
     usermod -d /var/lib/transmission-daemon debian-transmission && \
     rm -rf /var/lib/apt/lists/* /tmp/*
+COPY transmission.sh /usr/bin/
 
 VOLUME ["/var/lib/transmission-daemon"]
 
