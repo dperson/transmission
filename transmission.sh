@@ -75,7 +75,6 @@ else
     curl -Ls 'http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
                 gzip -cd > $dir/info/blocklists/bt_level1
     chown debian-transmission. $dir/info/blocklists/bt_level1
-    chmod 0777 /dev/stderr /dev/stdout
                 --log /dev/stdout --daemon
     grep -q peer-socket-tos $dir/info/settings.json ||
         sed -i '/peer-socket-tos/d; /"peer-port"/a \
