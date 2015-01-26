@@ -75,13 +75,12 @@ else
     curl -Ls 'http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
                 gzip -cd > $dir/info/blocklists/bt_level1
     chown debian-transmission. $dir/info/blocklists/bt_level1
-                --log /dev/stdout --daemon
     grep -q peer-socket-tos $dir/info/settings.json ||
         sed -i '/peer-socket-tos/d; /"peer-port"/a \
     "peer-socket-tos": "lowcost",' $dir/info/settings.json
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
-                --log-error --logfile /dev/stdout --global-seedratio 2.0 --dht \
+                --log-error --global-seedratio 2.0 --dht \
                 --incomplete-dir $dir/incomplete --paused --auth --foreground \
                 --username '${TRUSER:-admin}' --password '${TRPASSWD:-admin}' \
                 --download-dir $dir/downloads --no-portmap --allowed \\*"
