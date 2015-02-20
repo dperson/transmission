@@ -1,10 +1,9 @@
 FROM ubuntu:trusty
 MAINTAINER David Personette <dperson@dperson.com>
 
-ENV DEBIAN_FRONTEND noninteractive
-
 # Install transmission
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys\
+RUN export DEBIAN_FRONTEND='noninteractive' && \
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys\
                 976B5901365C5CA1 && \
     echo -n "deb http://ppa.launchpad.net/transmissionbt/ppa/ubuntu" >> \
                 /etc/apt/sources.list && \
