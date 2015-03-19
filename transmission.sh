@@ -86,5 +86,6 @@ else
                 --log-error -e /dev/stdout --global-seedratio 2.0 --dht \
                 --incomplete-dir $dir/incomplete --paused --auth --foreground \
                 --username '${TRUSER:-admin}' --password '${TRPASSWD:-admin}' \
-                --download-dir $dir/downloads --no-portmap --allowed \\*"
+                --download-dir $dir/downloads --no-portmap --allowed \\* \
+                2>/dev/null"
 fi
