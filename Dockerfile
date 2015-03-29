@@ -9,7 +9,8 @@ RUN export DEBIAN_FRONTEND='noninteractive' && \
                 /etc/apt/sources.list && \
     echo " trusty main" >> /etc/apt/sources.list && \
     apt-get update -qq && \
-    apt-get install -qqy --no-install-recommends transmission-daemon curl && \
+    apt-get install -qqy --no-install-recommends transmission-daemon curl \
+                $(apt-get -s dist-upgrade|awk '/^Inst.*ecurity/ {print $2}') &&\
     apt-get clean && \
     usermod -d /var/lib/transmission-daemon debian-transmission && \
     rm -rf /var/lib/apt/lists/* /tmp/*
