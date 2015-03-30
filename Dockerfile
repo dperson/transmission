@@ -3,8 +3,7 @@ MAINTAINER David Personette <dperson@dperson.com>
 
 # Install transmission
 RUN export DEBIAN_FRONTEND='noninteractive' && \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys\
-                976B5901365C5CA1 && \
+    apt-key adv --keyserver pgp.mit.edu --recv-keys 976B5901365C5CA1 && \
     echo -n "deb http://ppa.launchpad.net/transmissionbt/ppa/ubuntu" >> \
                 /etc/apt/sources.list && \
     echo " trusty main" >> /etc/apt/sources.list && \
