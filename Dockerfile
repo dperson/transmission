@@ -3,10 +3,6 @@ MAINTAINER David Personette <dperson@dperson.com>
 
 # Install transmission
 RUN export DEBIAN_FRONTEND='noninteractive' && \
-    apt-key adv --keyserver pgp.mit.edu --recv-keys 976B5901365C5CA1 && \
-    echo -n "deb http://ppa.launchpad.net/transmissionbt/ppa/ubuntu" >> \
-                /etc/apt/sources.list && \
-    echo " trusty main" >> /etc/apt/sources.list && \
     apt-get update -qq && \
     apt-get install -qqy --no-install-recommends transmission-daemon curl \
                 $(apt-get -s dist-upgrade|awk '/^Inst.*ecurity/ {print $2}') &&\
