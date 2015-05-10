@@ -72,7 +72,7 @@ elif [[ $# -ge 1 ]]; then
     echo "ERROR: command not found: $1"
     exit 13
 else
-    curl -Ls 'http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
+    curl -Ls 'http://list.iblocklist.com/?list=ydxerpxkpcfqjaybcssw&fileformat=p2p&archiveformat=gz' |
                 gzip -cd > $dir/info/blocklists/bt_level1
     chown debian-transmission. $dir/info/blocklists/bt_level1
     grep -q peer-socket-tos $dir/info/settings.json ||
@@ -82,9 +82,9 @@ else
     sed -i '/"speed-limit-up"/s/:.*/: 10,/' $dir/info/settings.json
     sed -i '/"speed-limit-up-enabled"/s/:.*/: true,/' $dir/info/settings.json
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
-                --config-dir $dir/info --blocklist --encryption-preferred \
-                --log-error -e /dev/stdout --global-seedratio 2.0 --dht \
-                --incomplete-dir $dir/incomplete --paused --auth --foreground \
+                --config-dir $dir/info --blocklist --encryption-required \
+                --log-error -e /dev/stdout --global-seedratio 3.0 --no-dht \
+                --incomplete-dir $dir/incomplete --auth --foreground \
                 --username '${TRUSER:-admin}' --password '${TRPASSWD:-admin}' \
                 --download-dir $dir/downloads --no-portmap --allowed \\* 2>&1"
 fi
