@@ -66,7 +66,9 @@ shift $(( OPTIND - 1 ))
 [[ -d $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists
 chown -Rh debian-transmission. $dir
 
-if [[ $# -ge 1 && -x $(which $1 2>&-) ]]; then
+if ps -ef | grep -q transmission; then
+    echo "Service already running, please restart container to apply changes"
+elif [[ $# -ge 1 && -x $(which $1 2>&-) ]]; then
     exec "$@"
 elif [[ $# -ge 1 ]]; then
     echo "ERROR: command not found: $1"
