@@ -66,7 +66,7 @@ shift $(( OPTIND - 1 ))
 [[ -d $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists
 chown -Rh debian-transmission. $dir
 
-if ps -ef | grep -v transmission.sh | grep -q transmission; then
+if ps -ef | egrep -v 'grep|transmission.sh' | grep -q transmission; then
     echo "Service already running, please restart container to apply changes"
 elif [[ $# -ge 1 && -x $(which $1 2>&-) ]]; then
     exec "$@"
