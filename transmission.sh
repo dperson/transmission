@@ -66,13 +66,13 @@ shift $(( OPTIND - 1 ))
 [[ -d $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists
 chown -Rh debian-transmission. $dir
 
-if ps -ef | egrep -v 'grep|transmission.sh' | grep -q transmission; then
-    echo "Service already running, please restart container to apply changes"
-elif [[ $# -ge 1 && -x $(which $1 2>&-) ]]; then
+if [[ $# -ge 1 && -x $(which $1 2>&-) ]]; then
     exec "$@"
 elif [[ $# -ge 1 ]]; then
     echo "ERROR: command not found: $1"
     exit 13
+elif ps -ef | egrep -v 'grep|transmission.sh' | grep -q transmission; then
+    echo "Service already running, please restart container to apply changes"
 else
     curl -Ls 'http://list.iblocklist.com/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
                 gzip -cd > $dir/info/blocklists/bt_level1
