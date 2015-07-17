@@ -14,6 +14,14 @@ a cross-platform back-end.
 This Transmission container was built to automatically download a level1 host
 filter (can be used with dperson/openvpn).
 
+    sudo docker run --cap-add=NET_ADMIN --device /dev/net/tun --name vpn \
+                --dns 8.8.4.4 --dns 8.8.8.8 --restart=always \
+                -d dperson/openvpn-client ||
+    sudo docker run --name bit --net=container:openvpn \
+                -d dperson/transmission
+    sudo docker run --name web -p 80:80 -p 443:443 --link openvpn:bit \
+                -d dperson/nginx -w "http://bit:9091/transmission;/transmission"
+
 ## Hosting a Transmission instance
 
     sudo docker run --name transmission -p 9091:9091 -d dperson/transmission
