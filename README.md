@@ -17,7 +17,7 @@ filter (can be used with dperson/openvpn).
     sudo docker run --cap-add=NET_ADMIN --device /dev/net/tun --name vpn \
                 --dns 8.8.4.4 --dns 8.8.8.8 --restart=always \
                 -d dperson/openvpn-client ||
-    sudo docker run --name bit --net=container:openvpn \
+    sudo docker run --name bit --net=container:vpn \
                 -d dperson/transmission
     sudo docker run --name web -p 80:80 -p 443:443 --link vpn:bit \
                 -d dperson/nginx -w "http://bit:9091/transmission;/transmission"
