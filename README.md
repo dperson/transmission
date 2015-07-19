@@ -19,7 +19,7 @@ filter (can be used with dperson/openvpn).
                 -d dperson/openvpn-client ||
     sudo docker run --name bit --net=container:openvpn \
                 -d dperson/transmission
-    sudo docker run --name web -p 80:80 -p 443:443 --link openvpn:bit \
+    sudo docker run --name web -p 80:80 -p 443:443 --link vpn:bit \
                 -d dperson/nginx -w "http://bit:9091/transmission;/transmission"
 
 ## Hosting a Transmission instance
