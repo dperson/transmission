@@ -48,19 +48,25 @@ ENVIROMENT VARIABLES (only available with `docker run`)
 
  * `TRUSER` - Set the username for transmission auth (default 'admin')
  * `TRPASSWD` - Set the password for transmission auth (default 'admin')
- * `TIMEZONE` - As above, set a zoneinfo timezone, IE `EST5EDT`
+ * `TZ` - As above, set a zoneinfo timezone, IE `EST5EDT`
 
 ## Examples
 
 Any of the commands can be run at creation with `docker run` or later with
 `docker exec transmission.sh` (as of version 1.3 of docker).
 
+### Setting the Timezone
+
     sudo docker run --name transmission -d dperson/transmission -t EST5EDT
+
+OR using `environment variables`
+
+    sudo docker run --name transmission -e TZ=EST5EDT -d dperson/transmission
 
 Will get you the same settings as
 
     sudo docker run --name transmission -p 9091:9091 -d dperson/transmission
-    sudo docker exec transmission transmission.sh -T EST5EDT \
+    sudo docker exec transmission transmission.sh -t EST5EDT \
                 ls -AlF /etc/localtime
     sudo docker restart transmission
 
