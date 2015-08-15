@@ -1,4 +1,4 @@
-[![logo](http://blogmmix.ch/sites/default/files/imagecache/gross/6/transmission-bittorrent1.png)](https://www.transmissionbt.com/)
+[![logo](https://raw.githubusercontent.com/dperson/transmission/master/logo.png)](https://www.transmissionbt.com/)
 
 # Transmission
 
