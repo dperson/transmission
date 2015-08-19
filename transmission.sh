@@ -13,10 +13,23 @@
 #        AUTHOR: David Personette (dperson@gmail.com),
 #  ORGANIZATION:
 #       CREATED: 09/28/2014 12:11
-#      REVISION: 1.0
+#      REVISION: 1.1
 #===============================================================================
 
 set -o nounset                              # Treat unset variables as an error
+
+# Set the user and group id to the given env variables
+if [ -n "$PUID" -a "$(id -u debian-transmission)" != "$PUID" ]; then usermod -o -u "$PUID" debian-transmission ; fi
+if [ -n "$PGID" -a "$(id -g debian-transmission)" != "$PGID" ]; then groupmod -o -g  "$PGID" debian-transmission ; fi
+
+echo "
+-----------------------------------
+Transmission GID/UID
+-----------------------------------
+debian-transmission uid:    $(id -u debian-transmission)
+debian-transmission gid:    $(id -g debian-transmission)
+-----------------------------------
+"
 
 dir="/var/lib/transmission-daemon"
 
