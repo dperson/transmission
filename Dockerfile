@@ -18,7 +18,7 @@ RUN export DEBIAN_FRONTEND='noninteractive' && \
     rm -rf /var/lib/apt/lists/* /tmp/*
 COPY transmission.sh /usr/bin/
 
-VOLUME ["/var/lib/transmission-daemon"]
+VOLUME ["/run", "/tmp", "/var/cache", "/var/lib", "/var/log", "/var/tmp"]
 
 EXPOSE 9091 51413/tcp 51413/udp
 
