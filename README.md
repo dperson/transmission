@@ -49,6 +49,8 @@ ENVIROMENT VARIABLES (only available with `docker run`)
  * `TRUSER` - Set the username for transmission auth (default 'admin')
  * `TRPASSWD` - Set the password for transmission auth (default 'admin')
  * `TZ` - As above, set a zoneinfo timezone, IE `EST5EDT`
+ * `PUID` - The numeric uid to use for the debian-transmission user
+ * `GUID` - The numeric git to use for the debian-transmission group
 
 ## Examples
 
