@@ -26,11 +26,15 @@ dir="/var/lib/transmission-daemon"
 # Return: the correct zoneinfo file will be symlinked into place
 timezone() { local timezone="${1:-EST5EDT}"
     [[ -e /usr/share/zoneinfo/$timezone ]] || {
-        echo "ERROR: invalid timezone specified" >&2
+        echo "ERROR: invalid timezone specified: $timezone" >&2
         return
     }
 
-    ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
+    if [[ $(cat /etc/timezone) != $timezone ]]; then
+        echo "$timezone" > /etc/timezone
+        ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
+        dpkg-reconfigure -f noninteractive tzdata >/dev/null 2>&1
+    fi
 }
 
 ### usage: Help
@@ -49,6 +53,8 @@ The 'command' (if provided and valid) will be run instead of transmission
     exit $RC
 }
 
+cd /tmp
+
 while getopts ":ht:" opt; do
     case "$opt" in
         h) usage ;;
@@ -59,20 +65,26 @@ while getopts ":ht:" opt; do
 done
 shift $(( OPTIND - 1 ))
 
-[[ "${TIMEZONE:-""}" ]] && timezone "$TIMEZONE"
+[[ "${TZ:-""}" ]] && timezone "$TZ"
+[[ "${USERID:-""}" =~ ^[0-9]+$ ]] && usermod -u $USERID debian-transmission
+[[ "${GROUPID:-""}" =~ ^[0-9]+$ ]] && usermod -g $GROUPID debian-transmission
 
 [[ -d $dir/downloads ]] || mkdir -p $dir/downloads
 [[ -d $dir/incomplete ]] || mkdir -p $dir/incomplete
 [[ -d $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists
-chown -Rh debian-transmission. $dir
+
+chown -Rh debian-transmission. $dir 2>&1 | grep -iv 'Read-only' || :
 
 if [[ $# -ge 1 && -x $(which $1 2>&-) ]]; then
     exec "$@"
 elif [[ $# -ge 1 ]]; then
     echo "ERROR: command not found: $1"
     exit 13
+elif ps -ef | egrep -v 'grep|transmission.sh' | grep -q transmission; then
+    echo "Service already running, please restart container to apply changes"
 else
-    curl -Ls 'http://list.iblocklist.com/?list=ydxerpxkpcfqjaybcssw&fileformat=p2p&archiveformat=gz' |
+    url='http://list.iblocklist.com'
+    curl -Ls "$url"'/?list=ydxerpxkpcfqjaybcssw&fileformat=p2p&archiveformat=gz' |
                 gzip -cd > $dir/info/blocklists/bt_level1
     chown debian-transmission. $dir/info/blocklists/bt_level1
     grep -q peer-socket-tos $dir/info/settings.json ||
