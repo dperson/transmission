@@ -79,12 +79,10 @@ else
         sed -i '/"peer-port"/a \
     "peer-socket-tos": "lowcost",' $dir/info/settings.json
     sed -i '/"queue-stalled-enabled"/s/:.*/: true,/' $dir/info/settings.json
-    sed -i '/"speed-limit-up"/s/:.*/: 10,/' $dir/info/settings.json
-    sed -i '/"speed-limit-up-enabled"/s/:.*/: true,/' $dir/info/settings.json
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-required \
-                --log-error -e /dev/stdout --global-seedratio 3.0 --no-dht \
+                --log-error -e /proc/self/fd/1 --global-seedratio 3.0 --no-dht \
                 --incomplete-dir $dir/incomplete --auth --foreground \
                 --username '${TRUSER:-admin}' --password '${TRPASSWD:-admin}' \
-                --download-dir $dir/downloads --no-portmap --allowed \\* 2>&1"
+                --download-dir $dir/downloads --allowed \\* 2>&1"
 fi
