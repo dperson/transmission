@@ -4,7 +4,7 @@ MAINTAINER David Personette <dperson@dperson.com>
 # Install transmission
 RUN export DEBIAN_FRONTEND='noninteractive' && \
     apt-get update -qq && \
-    apt-get install -qqy --no-install-recommends transmission-daemon curl \
+    apt-get install -qqy --no-install-recommends transmission-daemon curl bind9utils bind9-host \
                 $(apt-get -s dist-upgrade|awk '/^Inst.*ecurity/ {print $2}') &&\
     apt-get clean && \
     usermod -d /var/lib/transmission-daemon debian-transmission && \
