@@ -31,7 +31,7 @@ timezone() { local timezone="${1:-EST5EDT}"
     }
 
     if [[ $(cat /etc/timezone) != $timezone ]]; then
-        echo "$timezone" > /etc/timezone
+        echo "$timezone" >/etc/timezone
         ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
         dpkg-reconfigure -f noninteractive tzdata >/dev/null 2>&1
     fi
@@ -85,7 +85,7 @@ elif ps -ef | egrep -v 'grep|transmission.sh' | grep -q transmission; then
 else
     url='http://list.iblocklist.com'
     curl -Ls "$url"'/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
-                gzip -cd > $dir/info/blocklists/bt_level1
+                gzip -cd >$dir/info/blocklists/bt_level1
     chown debian-transmission. $dir/info/blocklists/bt_level1
     grep -q peer-socket-tos $dir/info/settings.json ||
         sed -i '/"peer-port"/a \
