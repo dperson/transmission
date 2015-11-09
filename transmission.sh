@@ -96,7 +96,7 @@ else
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
                 --log-error -e /dev/stdout --global-seedratio 2.0 --dht \
-                --incomplete-dir $dir/incomplete --paused --auth --foreground \
+                --incomplete-dir $dir/incomplete --auth --foreground \
                 --username '${TRUSER:-admin}' --password '${TRPASSWD:-admin}' \
                 --download-dir $dir/downloads --no-portmap --allowed \\* 2>&1"
 fi
