@@ -69,9 +69,9 @@ shift $(( OPTIND - 1 ))
 [[ "${USERID:-""}" =~ ^[0-9]+$ ]] && usermod -u $USERID debian-transmission
 [[ "${GROUPID:-""}" =~ ^[0-9]+$ ]] && groupmod -g $GROUPID debian-transmission
 
-[[ -d $dir/downloads ]] || mkdir -p $dir/downloads
-[[ -d $dir/incomplete ]] || mkdir -p $dir/incomplete
-[[ -d $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists
+[[ -d $dir/downloads || -L $dir/downloads ]] || mkdir -p $dir/downloads
+[[ -d $dir/incomplete || -L $dir/incomplete  ]] || mkdir -p $dir/incomplete
+[[ -d $dir/info/blocklists  || -L $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists
 
 chown -Rh debian-transmission. $dir 2>&1 | grep -iv 'Read-only' || :
 
