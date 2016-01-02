@@ -90,9 +90,6 @@ else
     grep -q peer-socket-tos $dir/info/settings.json ||
         sed -i '/"peer-port"/a \
     "peer-socket-tos": "lowcost",' $dir/info/settings.json
-    sed -i '/"queue-stalled-enabled"/s/:.*/: true,/' $dir/info/settings.json
-    sed -i '/"speed-limit-up"/s/:.*/: 10,/' $dir/info/settings.json
-    sed -i '/"speed-limit-up-enabled"/s/:.*/: true,/' $dir/info/settings.json
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
                 --log-error -e /dev/stdout --global-seedratio 2.0 --dht \
