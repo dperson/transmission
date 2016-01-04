@@ -44,13 +44,17 @@ OR set local storage:
 
     The 'command' (if provided and valid) will be run instead of transmission
 
-ENVIROMENT VARIABLES (only available with `docker run`)
+ENVIRONMENT VARIABLES (only available with `docker run`)
 
- * `TRUSER` - Set the username for transmission auth (default 'admin')
- * `TRPASSWD` - Set the password for transmission auth (default 'admin')
+ * `TR_USER` - Set the username for transmission auth (default 'admin')
+ * `TR_PASSWD` - Set the password for transmission auth (default 'admin')
  * `TZ` - As above, configure the zoneinfo timezone, IE `EST5EDT`
  * `USERID` - Set the UID for the app user
  * `GROUPID` - Set the GID for the app user
+
+Other environment variables beginning with `TR_` will edit the configuration file
+accordingly:
+ * `TR_MAX_PEERS_GLOBAL=400` will translate to `"max-peers-global": 400,`
 
 ## Examples
 

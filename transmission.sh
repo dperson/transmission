@@ -83,22 +83,49 @@ elif [[ $# -ge 1 ]]; then
 elif ps -ef | egrep -v 'grep|transmission.sh' | grep -q transmission; then
     echo "Service already running, please restart container to apply changes"
 else
+    # init blocklist
     url='http://list.iblocklist.com'
     curl -Ls "$url"'/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
                 gzip -cd >$dir/info/blocklists/bt_level1
     chown debian-transmission. $dir/info/blocklists/bt_level1
-    grep -q peer-socket-tos $dir/info/settings.json || {
-        sed -i '/"peer-port"/a \
-    "peer-socket-tos": "lowcost",' $dir/info/settings.json
-        sed -i '/"queue-stalled-enabled"/s/:.*/: true,/' $dir/info/settings.json
-        sed -i '/"speed-limit-up"/s/:.*/: 10,/' $dir/info/settings.json
-        sed -i '/"speed-limit-up-enabled"/s/:.*/: true,/' \
-                    $dir/info/settings.json
-    }
+
+    settings_file=$dir/info/settings.json
+
+    # settings
+    for env in $(printenv); do
+        name=$(echo -n $env | cut -d= -f1)
+        val=$(echo -n $env | cut -d= -f2)
+
+        echo $name | grep -v '^TR_' > /dev/null && continue
+
+        # handled via command line
+        case $name in
+            TR_USER | TR_PASSWD) continue ;;
+        esac
+
+        tr_name=$(echo -n $name | cut -c4- | tr '[:upper:]' '[:lower:]' | sed 's/_/-/g')
+        grep $tr_name $settings_file > /dev/null
+        is_present=$?
+
+        tr_value="\"$val\""
+        case $val in
+            true) tr_value="true" ;;
+            false) tr_value="false" ;;
+        esac
+        echo -n $val | grep -P '^\d+$' > /dev/null && tr_value=$val
+
+        if [ $is_present -eq 0 ]; then
+            sed -i "/\"$tr_name\"/s/:.*/: $tr_value,/" $settings_file
+        else
+            sed -i "/^{/a \"$tr_name\": $tr_value," $settings_file
+        fi
+    done
+
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
-                --log-error -e /dev/stdout --global-seedratio 2.0 --dht \
+                --log-error -e /dev/stdout --dht \
                 --incomplete-dir $dir/incomplete --auth --foreground \
-                --username '${TRUSER:-admin}' --password '${TRPASSWD:-admin}' \
+                --username '${TR_USER:-${TRUSER:-admin}}' \
+                --password '${TR_PASSWD:-${TRPASSWD:-admin}}' \
                 --download-dir $dir/downloads --no-portmap --allowed \\* 2>&1"
 fi
