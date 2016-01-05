@@ -32,6 +32,10 @@ OR set local storage:
                 -v /path/to/directory:/var/lib/transmission-daemon/downloads \
                 -d dperson/transmission
 
+**NOTE**: The configuration is in `/var/lib/transmission-daemon/info`, downloads
+are in `/var/lib/transmission-daemon/downloads`, and partial downloads are in
+`/var/lib/transmission-daemon/incomplete`.
+
 ## Configuration
 
     sudo docker run -it --rm dperson/transmission -h
