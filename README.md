@@ -56,6 +56,11 @@ ENVIRONMENT VARIABLES (only available with `docker run`)
  * `USERID` - Set the UID for the app user
  * `GROUPID` - Set the GID for the app user
 
+Other environment variables beginning with `TR_` will edit the configuration
+file accordingly:
+
+ * `TR_MAX_PEERS_GLOBAL=400` will translate to `"max-peers-global": 400,`
+
 ## Examples
 
 Any of the commands can be run at creation with `docker run` or later with

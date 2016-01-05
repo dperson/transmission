@@ -88,6 +88,17 @@ else
     curl -Ls "$url"'/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
                 gzip -cd >$dir/info/blocklists/bt_level1
     chown debian-transmission. $dir/info/blocklists/bt_level1
+    # Settings
+    for env in $(printenv | grep '^TR_'); do
+        name=$(cut -c4- <<< ${env%%=*} | tr '_A-Z' '-a-z')
+        val="\"${env##*=}\""
+        [[ "$val" =~ ^"([0-9]*|false|true)"$ ]] && val=$(tr -d'"' <<< $val)
+        if grep -q $name $dir/info/settings.json; then
+            sed -i "/\"$name\"/s/:.*/: $val,/" $dir/info/settings.json
+        else
+            sed -i "/^}/i\    \"$name\": $val," $dir/info/settings.json
+        fi
+    done
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
                 --auth --dht --foreground --log-error -e /dev/stdout \
