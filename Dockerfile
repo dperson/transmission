@@ -14,6 +14,14 @@ RUN export DEBIAN_FRONTEND='noninteractive' && \
                 mkdir -p /var/lib/transmission-daemon/incomplete && \
     [ -d /var/lib/transmission-daemon/info/blocklists ] || \
                 mkdir -p /var/lib/transmission-daemon/info/blocklists && \
+    file="/var/lib/transmission-daemon/info/settings.json" && \
+    sed -i '/"peer-port"/a\    "peer-socket-tos": "lowcost",' $file && \
+    sed -i '/"port-forwarding-enabled"/a\    "queue-stalled-enabled": true,' \
+                $file && \
+    sed -i '/"queue-stalled-enabled"/a\    "ratio-limit-enabled": true,' \
+                $file && \
+    sed -i '/"rpc-whitelist"/a\    "speed-limit-up": 10,' $file && \
+    sed -i '/"speed-limit-up"/a\    "speed-limit-up-enabled": true,' $file && \
     chown -Rh debian-transmission. /var/lib/transmission-daemon && \
     rm -rf /var/lib/apt/lists/* /tmp/*
 COPY transmission.sh /usr/bin/

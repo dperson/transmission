@@ -83,22 +83,15 @@ elif [[ $# -ge 1 ]]; then
 elif ps -ef | egrep -v 'grep|transmission.sh' | grep -q transmission; then
     echo "Service already running, please restart container to apply changes"
 else
+    # Initialize blocklist
     url='http://list.iblocklist.com'
     curl -Ls "$url"'/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
                 gzip -cd >$dir/info/blocklists/bt_level1
     chown debian-transmission. $dir/info/blocklists/bt_level1
-    grep -q peer-socket-tos $dir/info/settings.json || {
-        sed -i '/"peer-port"/a \
-    "peer-socket-tos": "lowcost",' $dir/info/settings.json
-        sed -i '/"queue-stalled-enabled"/s/:.*/: true,/' $dir/info/settings.json
-        sed -i '/"speed-limit-up"/s/:.*/: 10,/' $dir/info/settings.json
-        sed -i '/"speed-limit-up-enabled"/s/:.*/: true,/' \
-                    $dir/info/settings.json
-    }
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
-                --log-error -e /dev/stdout --global-seedratio 2.0 --dht \
-                --incomplete-dir $dir/incomplete --auth --foreground \
+                --auth --dht --foreground --log-error -e /dev/stdout \
+                --download-dir $dir/downloads --incomplete-dir $dir/incomplete \
                 --username '${TRUSER:-admin}' --password '${TRPASSWD:-admin}' \
-                --download-dir $dir/downloads --no-portmap --allowed \\* 2>&1"
+                --no-portmap --allowed \\* 2>&1"
 fi
