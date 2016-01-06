@@ -22,6 +22,9 @@ filter (can be used with dperson/openvpn).
     sudo docker run --name web -p 80:80 -p 443:443 --link vpn:bit \
                 -d dperson/nginx -w "http://bit:9091/transmission;/transmission"
 
+**NOTE**: The default username/password are `admin`/`admin`. See `TRUSER` and
+`TRGROUP` below, for how to change them.
+
 ## Hosting a Transmission instance
 
     sudo docker run --name transmission -p 9091:9091 -d dperson/transmission
