@@ -53,8 +53,6 @@ The 'command' (if provided and valid) will be run instead of transmission
     exit $RC
 }
 
-cd /tmp
-
 while getopts ":ht:" opt; do
     case "$opt" in
         h) usage ;;
