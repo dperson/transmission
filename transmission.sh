@@ -90,7 +90,7 @@ else
     for env in $(printenv | grep '^TR_'); do
         name=$(cut -c4- <<< ${env%%=*} | tr '_A-Z' '-a-z')
         val="\"${env##*=}\""
-        [[ "$val" =~ ^"([0-9]*|false|true)"$ ]] && val=$(tr -d'"' <<< $val)
+        [[ "$val" =~ ^\"([0-9]+|false|true)\"$ ]] && val=$(sed 's/"//g' <<<$val)
         if grep -q $name $dir/info/settings.json; then
             sed -i "/\"$name\"/s/:.*/: $val,/" $dir/info/settings.json
         else
