@@ -66,6 +66,17 @@ shift $(( OPTIND - 1 ))
 [[ "${TZ:-""}" ]] && timezone "$TZ"
 [[ "${USERID:-""}" =~ ^[0-9]+$ ]] && usermod -u $USERID -o debian-transmission
 [[ "${GROUPID:-""}" =~ ^[0-9]+$ ]]&& groupmod -g $GROUPID -o debian-transmission
+for env in $(printenv | grep '^TR_'); do
+    name=$(cut -c4- <<< ${env%%=*} | tr '_A-Z' '-a-z')
+    val="\"${env##*=}\""
+    [[ "$val" =~ ^\"([0-9]+|false|true)\"$ ]] && val=$(sed 's/"//g' <<<$val)
+    sed -i 's/\([0-9"]\)$/\1,/' $dir/info/settings.json
+    if grep -q $name $dir/info/settings.json; then
+        sed -i "/\"$name\"/s/:.*/: $val,/" $dir/info/settings.json
+    else
+        sed -i "/^}/i\    \"$name\": $val," $dir/info/settings.json
+    fi
+done
 
 [[ -d $dir/downloads ]] || mkdir -p $dir/downloads
 [[ -d $dir/incomplete ]] || mkdir -p $dir/incomplete
@@ -86,17 +97,6 @@ else
     curl -Ls "$url"'/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
                 gzip -cd >$dir/info/blocklists/bt_level1
     chown debian-transmission. $dir/info/blocklists/bt_level1
-    # Settings
-    for env in $(printenv | grep '^TR_'); do
-        name=$(cut -c4- <<< ${env%%=*} | tr '_A-Z' '-a-z')
-        val="\"${env##*=}\""
-        [[ "$val" =~ ^\"([0-9]+|false|true)\"$ ]] && val=$(sed 's/"//g' <<<$val)
-        if grep -q $name $dir/info/settings.json; then
-            sed -i "/\"$name\"/s/:.*/: $val,/" $dir/info/settings.json
-        else
-            sed -i "/^}/i\    \"$name\": $val," $dir/info/settings.json
-        fi
-    done
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
                 --auth --dht --foreground --log-error -e /dev/stdout \
