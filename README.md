@@ -46,6 +46,7 @@ are in `/var/lib/transmission-daemon/downloads`, and partial downloads are in
     Usage: transmission.sh [-opt] [command]
     Options (fields in '[]' are optional, '<>' are required):
         -h          This help
+        -n          No auth config; don't configure authentication at runtime
         -t ""       Configure timezone
                     possible arg: "[timezone]" - zoneinfo timezone for container
 
