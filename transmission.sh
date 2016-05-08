@@ -94,6 +94,13 @@ elif [[ $# -ge 1 ]]; then
 elif ps -ef | egrep -v 'grep|transmission.sh' | grep -q transmission; then
     echo "Service already running, please restart container to apply changes"
 else
+    if [[ "${WAITIFACE:-""}" != "" ]]; then
+        while [ "$(ip r | grep $WAITIFACE)" == "" ]; do
+            >&2 echo "Interface $WAITIFACE is not in 'ip r', waiting..."
+            sleep 5
+        done
+        >&2 echo "$WAITIFACE is up, proceeding..."
+    fi
     # Initialize blocklist
     url='http://list.iblocklist.com'
     curl -Ls "$url"'/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
