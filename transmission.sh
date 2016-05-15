@@ -94,11 +94,13 @@ elif [[ $# -ge 1 ]]; then
 elif ps -ef | egrep -v 'grep|transmission.sh' | grep -q transmission; then
     echo "Service already running, please restart container to apply changes"
 else
-    # Initialize blocklist
-    url='http://list.iblocklist.com'
-    curl -Ls "$url"'/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
-                gzip -cd >$dir/info/blocklists/bt_level1
-    chown debian-transmission. $dir/info/blocklists/bt_level1
+    if [[ "${BLOCKLIST:-""}" != "no" ]]; then
+        # Initialize blocklist
+        url='http://list.iblocklist.com'
+        curl -Ls "$url"'/?list=bt_level1&fileformat=p2p&archiveformat=gz' |
+                    gzip -cd >$dir/info/blocklists/bt_level1
+        chown debian-transmission. $dir/info/blocklists/bt_level1
+    fi
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
                 --dht --foreground --log-error -e /dev/stdout --no-portmap \
