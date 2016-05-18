@@ -83,6 +83,7 @@ done
 [[ -d $dir/downloads ]] || mkdir -p $dir/downloads
 [[ -d $dir/incomplete ]] || mkdir -p $dir/incomplete
 [[ -d $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists
+[[ -d $dir/watches ]] || mkdir -p $dir/watches
 
 chown -Rh debian-transmission. $dir 2>&1 | grep -iv 'Read-only' || :
 
