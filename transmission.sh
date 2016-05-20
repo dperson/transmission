@@ -80,7 +80,7 @@ for env in $(printenv | grep '^TR_'); do
     fi
 done
 
-watchdir=$(awk -F'=' '/"watch-dir"/ {print $2}' $dir/info/settings.json; \
+watchdir=$(awk -F'=' '/"watch-dir"/ {print $2}' $dir/info/settings.json |
             sed 's/[,"]//g')
 [[ -d $dir/downloads ]] || mkdir -p $dir/downloads
 [[ -d $dir/incomplete ]] || mkdir -p $dir/incomplete
