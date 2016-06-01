@@ -107,9 +107,8 @@ else
     fi
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
-                --dht --foreground --log-error -e /dev/stdout --no-portmap \
+                --dht --allowed \\* --foreground --log-info --no-portmap \
                 --download-dir $dir/downloads --incomplete-dir $dir/incomplete \
                 $([[ -z ${NOAUTH:-""} ]] && echo '--auth --username \
-                '"${TRUSER:-admin}"' --password '"${TRPASSWD:-admin}") \
-                --allowed \\* 2>&1"
+                '"${TRUSER:-admin}"' --password '"${TRPASSWD:-admin}") 2>&1"
 fi
