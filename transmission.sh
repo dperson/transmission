@@ -108,7 +108,6 @@ else
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
                 --dht --allowed \\* --foreground --log-info --no-portmap \
-                --download-dir $dir/downloads --incomplete-dir $dir/incomplete \
-                $([[ -z ${NOAUTH:-""} ]] && echo '--auth --username \
+                $([[ ${NOAUTH:-""} ]] || echo '--auth --username \
                 '"${TRUSER:-admin}"' --password '"${TRPASSWD:-admin}") 2>&1"
 fi

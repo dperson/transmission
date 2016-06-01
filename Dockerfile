@@ -16,6 +16,10 @@ RUN export DEBIAN_FRONTEND='noninteractive' && \
     [ -d $dir/incomplete ] || mkdir -p $dir/incomplete && \
     [ -d $dir/info/blocklists ] || mkdir -p $dir/info/blocklists && \
     file="$dir/info/settings.json" && \
+    sed -i '/"blocklist-enabled"/a\    "download-dir": "'"$dir"'/downloads",' \
+                $file && \
+    sed -i '/"download-dir"/a\    "incomplete-dir": "'"$dir"'/incomplete",' \
+                $file && \
     sed -i '/"peer-port"/a\    "peer-socket-tos": "lowcost",' $file && \
     sed -i '/"port-forwarding-enabled"/a\    "queue-stalled-enabled": true,' \
                 $file && \
