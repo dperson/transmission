@@ -19,6 +19,7 @@ RUN export DEBIAN_FRONTEND='noninteractive' && \
     sed -i 's|\("download-dir":\) .*|\1 "'"$dir"'/downloads",|' $file && \
     sed -i '/"download-dir"/a\    "incomplete-dir": "'"$dir"'/incomplete",' \
                 $file && \
+    sed -i '/"incomplete-dir"/a\    "incomplete-dir-enabled": true,' $file && \
     sed -i '/"peer-port"/a\    "peer-socket-tos": "lowcost",' $file && \
     sed -i '/"port-forwarding-enabled"/a\    "queue-stalled-enabled": true,' \
                 $file && \
