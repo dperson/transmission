@@ -72,7 +72,7 @@ for env in $(printenv | grep '^TR_'); do
     name=$(cut -c4- <<< ${env%%=*} | tr '_A-Z' '-a-z')
     val="\"${env##*=}\""
     [[ "$val" =~ ^\"([0-9]+|false|true)\"$ ]] && val=$(sed 's|"||g' <<<$val)
-    if grep -q $name $dir/info/settings.json; then
+    if grep -q "\"$name\"" $dir/info/settings.json; then
         sed -i "/\"$name\"/s|:.*|: $val,|" $dir/info/settings.json
     else
         sed -i 's|\([0-9"]\)$|\1,|' $dir/info/settings.json
@@ -97,7 +97,7 @@ elif [[ $# -ge 1 ]]; then
 elif ps -ef | egrep -v 'grep|transmission.sh' | grep -q transmission; then
     echo "Service already running, please restart container to apply changes"
 else
-    if [[ -z $(find $dir/info/blocklists/bt_level1 -mmin -1080) && \
+    if [[ -z $(find $dir/info/blocklists/bt_level1 -mmin -1080 2>&-) && \
                 "${BLOCKLIST:-""}" != "no" ]]; then
         # Initialize blocklist
         url='http://list.iblocklist.com'
