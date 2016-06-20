@@ -32,7 +32,7 @@ filter (can be used with dperson/openvpn).
 OR set local storage:
 
     sudo docker run -it --name transmission -p 9091:9091 \
-                -v /path/to/directory:/var/lib/transmission-daemon/downloads \
+                -v /path/to/directory:/var/lib/transmission-daemon \
                 -d dperson/transmission
 
 **NOTE**: The configuration is in `/var/lib/transmission-daemon/info`, downloads
