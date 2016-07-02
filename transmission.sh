@@ -105,9 +105,13 @@ else
                     gzip -cd >$dir/info/blocklists/bt_level1
         chown debian-transmission. $dir/info/blocklists/bt_level1
     fi
+    if [ -n "$NOAUTH" ]; then
+        AUTH_OPT="--no-auth"
+    else
+        AUTH_OPT="--auth --username '${TRUSER:-admin}' --password '${TRPASSWD:-admin}'"
+    fi
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
                 --dht --allowed \\* --foreground --log-info --no-portmap \
-                $([[ ${NOAUTH:-""} ]] || echo '--auth --username \
-                '"${TRUSER:-admin}"' --password '"${TRPASSWD:-admin}") 2>&1"
+                $AUTH_OPT 2>&1"
 fi
