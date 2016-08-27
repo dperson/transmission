@@ -25,8 +25,6 @@ RUN export DEBIAN_FRONTEND='noninteractive' && \
                 $file && \
     sed -i '/"queue-stalled-enabled"/a\    "ratio-limit-enabled": true,' \
                 $file && \
-    sed -i '/"rpc-whitelist"/a\    "speed-limit-up": 10,' $file && \
-    sed -i '/"speed-limit-up"/a\    "speed-limit-up-enabled": true,' $file && \
     chown -Rh debian-transmission. $dir && \
     rm -rf /var/lib/apt/lists/* /tmp/*
 COPY transmission.sh /usr/bin/
