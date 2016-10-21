@@ -4,7 +4,7 @@ MAINTAINER David Personette <dperson@gmail.com>
 # Install transmission
 RUN export DEBIAN_FRONTEND='noninteractive' && \
     apt-get update -qq && \
-    apt-get install -qqy --no-install-recommends curl psutils \
+    apt-get install -qqy --no-install-recommends curl procps \
                 transmission-daemon \
                 $(apt-get -s dist-upgrade|awk '/^Inst.*ecurity/ {print $2}') &&\
     apt-get clean && \
