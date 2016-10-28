@@ -107,7 +107,7 @@ else
     fi
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
                 --config-dir $dir/info --blocklist --encryption-preferred \
-                --dht --allowed \\* --foreground --log-info --no-portmap \
+                --allowed \\* --foreground --log-info --no-portmap \
                 $([[ ${NOAUTH:-""} ]] && echo '--no-auth' || echo "--auth \
                 --username ${TRUSER:-admin} --password ${TRPASSWD:-admin}")"
 fi
