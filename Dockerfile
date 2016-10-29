@@ -18,6 +18,7 @@ RUN export DEBIAN_FRONTEND='noninteractive' && \
     [ -d $dir/info/blocklists ] || mkdir -p $dir/info/blocklists && \
     file="$dir/info/settings.json" && \
     sed -i 's|\("download-dir":\) .*|\1 "'"$dir"'/downloads",|' $file && \
+    sed -i '/"blocklist-enabled"/a\    "dht-enabled": true,' $file && \
     sed -i '/"download-dir"/a\    "incomplete-dir": "'"$dir"'/incomplete",' \
                 $file && \
     sed -i '/"incomplete-dir"/a\    "incomplete-dir-enabled": true,' $file && \
