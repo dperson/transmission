@@ -25,6 +25,12 @@ filter (can be used with dperson/openvpn).
 **NOTE**: The default username/password are `admin`/`admin`. See `TRUSER` and
 `TRGROUP` below, for how to change them.
 
+**NOTE2**: To connect to the transmission container, point your browser to the
+actual `<hostname_or_IP_address>` of the system running docker with a URI as
+below:
+
+    https://<hostname_or_IP_address>/transmission/web/
+
 ## Hosting a Transmission instance
 
     sudo docker run -it --name transmission -p 9091:9091 -d dperson/transmission
