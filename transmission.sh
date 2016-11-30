@@ -106,8 +106,8 @@ else
         chown debian-transmission. $dir/info/blocklists/bt_level1
     fi
     exec su -l debian-transmission -s /bin/bash -c "exec transmission-daemon \
-                --config-dir $dir/info --blocklist --encryption-preferred \
-                --allowed \\* --foreground --log-info --no-portmap \
+                --allowed \\* --blocklist --config-dir $dir/info \
+                --foreground --log-info --no-portmap \
                 $([[ ${NOAUTH:-""} ]] && echo '--no-auth' || echo "--auth \
                 --username ${TRUSER:-admin} --password ${TRPASSWD:-admin}")"
 fi
