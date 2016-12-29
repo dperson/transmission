@@ -75,7 +75,7 @@ for env in $(printenv | grep '^TR_'); do
     if grep -q "\"$name\"" $dir/info/settings.json; then
         sed -i "/\"$name\"/s|:.*|: $val,|" $dir/info/settings.json
     else
-        sed -i 's|\([0-9"]\)$|\1,|' $dir/info/settings.json
+        sed -i 's|\([0-9A-Za-z"]\)$|\1,|' $dir/info/settings.json
         sed -i "/^}/i\    \"$name\": $val" $dir/info/settings.json
     fi
 done
