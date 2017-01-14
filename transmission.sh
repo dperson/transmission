@@ -72,12 +72,13 @@ for env in $(printenv | grep '^TR_'); do
     name=$(cut -c4- <<< ${env%%=*} | tr '_A-Z' '-a-z')
     val="\"${env##*=}\""
     [[ "$val" =~ ^\"([0-9]+|false|true)\"$ ]] && val=$(sed 's|"||g' <<<$val)
+    sed -i 's|\([0-9A-Za-z"]\)$|\1,|' $dir/info/settings.json
     if grep -q "\"$name\"" $dir/info/settings.json; then
         sed -i "/\"$name\"/s|:.*|: $val,|" $dir/info/settings.json
     else
-        sed -i 's|\([0-9A-Za-z"]\)$|\1,|' $dir/info/settings.json
-        sed -i "/^}/i\    \"$name\": $val" $dir/info/settings.json
+        sed -i "/^}/i\    \"$name\": $val," $dir/info/settings.json
     fi
+    sed -rzi 's/,([^,]*)$/\1/' $dir/info/settings.json
 done
 
 watchdir=$(awk -F'=' '/"watch-dir"/ {print $2}' $dir/info/settings.json |
