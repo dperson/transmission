@@ -88,7 +88,8 @@ watchdir=$(awk -F'=' '/"watch-dir"/ {print $2}' $dir/info/settings.json |
 [[ -d $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists
 [[ $watchdir && ! -d $watchdir ]] && mkdir -p $watchdir
 
-chown -Rh debian-transmission. $dir 2>&1 | grep -iv 'Read-only' || :
+chown -Rh debian-transmission. /etc/transmission-daemon/settings.json $dir 2>&1|
+            grep -iv 'Read-only' || :
 
 if [[ $# -ge 1 && -x $(which $1 2>&-) ]]; then
     exec "$@"
