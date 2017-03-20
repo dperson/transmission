@@ -31,6 +31,11 @@ below:
 
     https://<hostname_or_IP_address>/transmission/web/
 
+**NOTE3**: To open the peer connection port add the following to the
+`docker run` command:
+
+    -p 51413:51413 -p 51413:51413/udp
+
 ## Hosting a Transmission instance
 
     sudo docker run -it --name transmission -p 9091:9091 -d dperson/transmission
