@@ -47,7 +47,7 @@ OR set local storage:
                 -d dperson/transmission
 
 **NOTE**: The configuration is in `/var/lib/transmission-daemon/info`, downloads
-are in `/var/lib/transmission-daemon/downloads`, and partial downloads are in
+are in `/var/lib/transmission-daemon/Downloads`, and partial downloads are in
 `/var/lib/transmission-daemon/incomplete`.
 
 ## Configuration
