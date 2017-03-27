@@ -80,6 +80,8 @@ for env in $(printenv | grep '^TR_'); do
     fi
     sed -rzi 's/,([^,]*)$/\1/' $dir/info/settings.json
 done
+# json file above has trailing comma. Fix with sed
+sed -i -zr 's/,([^,]*$)/\1/' $dir/info/settings.json
 
 watchdir=$(awk -F'=' '/"watch-dir"/ {print $2}' $dir/info/settings.json |
             sed 's/[,"]//g')
