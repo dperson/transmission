@@ -40,7 +40,7 @@ below:
 
     sudo docker run -it --name transmission -p 9091:9091 -d dperson/transmission
 
-OR set local storage:
+OR set local storage (see *Complex configuration* below):
 
     sudo docker run -it --name transmission -p 9091:9091 \
                 -v /path/to/directory:/var/lib/transmission-daemon \
@@ -96,6 +96,18 @@ Will get you the same settings as
     sudo docker exec -it transmission transmission.sh -t EST5EDT \
                 ls -AlF /etc/localtime
     sudo docker restart transmission
+
+## Complex configuration
+
+If you wish to adapt the default configuration, use something like the following
+to copy it from a running container:
+
+    sudo docker cp transmission:/var/lib/transmission-daemon /some/path
+
+You can use the modified configuration with:
+
+    sudo docker run -it --name transmission -p 9091:9091 \
+                -v /some/path:/var/lib/transmission-daemon -d dperson/smokeping
 
 # User Feedback
 
