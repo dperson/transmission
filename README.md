@@ -58,8 +58,6 @@ are in `/var/lib/transmission-daemon/downloads`, and partial downloads are in
     Options (fields in '[]' are optional, '<>' are required):
         -h          This help
         -n          No auth config; don't configure authentication at runtime
-        -t ""       Configure timezone
-                    possible arg: "[timezone]" - zoneinfo timezone for container
 
     The 'command' (if provided and valid) will be run instead of transmission
 
@@ -67,7 +65,7 @@ ENVIRONMENT VARIABLES (only available with `docker run`)
 
  * `TRUSER` - Set the username for transmission auth (default 'admin')
  * `TRPASSWD` - Set the password for transmission auth (default 'admin')
- * `TZ` - As above, configure the zoneinfo timezone, IE `EST5EDT`
+ * `TZ` - Configure the zoneinfo timezone, IE `EST5EDT`
  * `USERID` - Set the UID for the app user
  * `GROUPID` - Set the GID for the app user
 
@@ -83,19 +81,8 @@ Any of the commands can be run at creation with `docker run` or later with
 
 ### Setting the Timezone
 
-    sudo docker run -it --name transmission -d dperson/transmission -t EST5EDT
-
-OR using `environment variables`
-
     sudo docker run -it --name transmission -e TZ=EST5EDT \
                 -d dperson/transmission
-
-Will get you the same settings as
-
-    sudo docker run -it --name transmission -p 9091:9091 -d dperson/transmission
-    sudo docker exec -it transmission transmission.sh -t EST5EDT \
-                ls -AlF /etc/localtime
-    sudo docker restart transmission
 
 ## Complex configuration
 
