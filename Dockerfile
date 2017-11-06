@@ -13,8 +13,8 @@ RUN apk --no-cache --no-progress upgrade && \
     [[ -d $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists && \
     /bin/echo -e '{\n    "blocklist-enabled": 0,' >$file && \
     echo '    "dht-enabled": true,' >>$file && \
-    echo '    "download-dir": "'"$dir"'",' >>$file && \
-    echo '    "incomplete-dir": "'"$dir"'",' >>$file && \
+    echo '    "download-dir": "'"$dir"'/downloads",' >>$file && \
+    echo '    "incomplete-dir": "'"$dir"'/incomplete",' >>$file && \
     echo '    "incomplete-dir-enabled": true,' >>$file && \
     echo '    "download-limit": 100,' >>$file && \
     echo '    "download-limit-enabled": 0,' >>$file && \
