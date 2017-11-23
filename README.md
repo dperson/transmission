@@ -94,7 +94,7 @@ to copy it from a running container:
 You can use the modified configuration with:
 
     sudo docker run -it --name transmission -p 9091:9091 \
-                -v /some/path:/var/lib/transmission-daemon -d dperson/smokeping
+                -v /some/path:/var/lib/transmission-daemon -d dperson/transmission
 
 # User Feedback
 
