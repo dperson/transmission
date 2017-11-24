@@ -23,7 +23,7 @@ filter (can be used with dperson/openvpn).
                 -d dperson/nginx -w "http://bit:9091/transmission;/transmission"
 
 **NOTE**: The default username/password are `admin`/`admin`. See `TRUSER` and
-`TRGROUP` below, for how to change them.
+`TRPASSWD` below, for how to change them.
 
 **NOTE2**: To connect to the transmission container, point your browser to the
 actual `<hostname_or_IP_address>` of the system running docker with a URI as
