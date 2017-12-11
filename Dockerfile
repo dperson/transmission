@@ -41,7 +41,7 @@ COPY transmission.sh /usr/bin/
 EXPOSE 9091 51413/tcp 51413/udp
 
 HEALTHCHECK --interval=60s --timeout=15s \
-            CMD curl -LSs http://localhost:9091/ >/dev/null
+            CMD netstat -lntp | grep -q '0\.0\.0\.0:9091'
 
 VOLUME ["/var/lib/transmission-daemon"]
 
