@@ -68,6 +68,8 @@ watchdir="$(awk -F'=' '/"watch-dir"/ {print $2}' $dir/info/settings.json |
 [[ $watchdir && ! -d $watchdir ]] && mkdir -p $watchdir
 
 chown -Rh transmission. $dir 2>&1 | grep -iv 'Read-only' || :
+# Ensure su is owned by root to avoid setgid issues when using user namespaces in daemon
+chown root:root /bin/su
 
 if [[ $# -ge 1 && -x $(which $1 2>&-) ]]; then
     exec "$@"
