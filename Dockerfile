@@ -3,7 +3,8 @@ MAINTAINER David Personette <dperson@gmail.com>
 
 # Install transmission
 RUN apk --no-cache --no-progress upgrade && \
-    apk --no-cache --no-progress add bash curl shadow sed transmission-daemon&&\
+    apk --no-cache --no-progress add bash curl shadow sed tini \
+                transmission-daemon && \
     dir="/var/lib/transmission-daemon" && \
     file="$dir/info/settings.json" && \
     mv /var/lib/transmission $dir && \
@@ -45,4 +46,4 @@ HEALTHCHECK --interval=60s --timeout=15s \
 
 VOLUME ["/var/lib/transmission-daemon"]
 
-ENTRYPOINT ["transmission.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/usr/bin/transmission.sh"]
