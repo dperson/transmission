@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:latest
 MAINTAINER David Personette <dperson@gmail.com>
 
 # Install transmission
