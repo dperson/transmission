@@ -20,6 +20,23 @@ set -o nounset                              # Treat unset variables as an error
 
 dir="/var/lib/transmission-daemon"
 
+### timezone: Set the timezone for the container
+# Arguments:
+#   timezone) for example EST5EDT
+# Return: the correct zoneinfo file will be symlinked into place
+timezone() { local timezone="${1:-EST5EDT}"
+    [[ -e /usr/share/zoneinfo/$timezone ]] || {
+        echo "ERROR: invalid timezone specified: $timezone" >&2
+        return
+    }
+
+    if [[ -w /etc/timezone && $(cat /etc/timezone) != $timezone ]]; then
+        echo "$timezone" >/etc/timezone
+        ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
+        dpkg-reconfigure -f noninteractive tzdata >/dev/null 2>&1
+    fi
+}
+
 ### usage: Help
 # Arguments:
 #   none)
@@ -29,16 +46,19 @@ usage() { local RC="${1:-0}"
 Options (fields in '[]' are optional, '<>' are required):
     -h          This help
     -n          No auth config; don't configure authentication at runtime
+    -t \"\"       Configure timezone
+                possible arg: \"[timezone]\" - zoneinfo timezone for container
 
 The 'command' (if provided and valid) will be run instead of transmission
 " >&2
     exit $RC
 }
 
-while getopts ":hn" opt; do
+while getopts ":hnt:" opt; do
     case "$opt" in
         h) usage ;;
         n) export NOAUTH=true ;;
+        t) timezone $OPTARG ;;
         "?") echo "Unknown option: -$OPTARG"; usage 1 ;;
         ":") echo "No argument value for option: -$OPTARG"; usage 2 ;;
     esac
@@ -47,6 +67,7 @@ shift $(( OPTIND - 1 ))
 
 [[ "${USERID:-""}" =~ ^[0-9]+$ ]] && usermod -u $USERID -o transmission
 [[ "${GROUPID:-""}" =~ ^[0-9]+$ ]]&& groupmod -g $GROUPID -o transmission
+[[ "${TZ:-""}" ]] && timezone $TZ
 for env in $(printenv | grep '^TR_'); do
     name="$(cut -c4- <<< ${env%%=*} | tr '_A-Z' '-a-z')"
     val="\"${env##*=}\""
