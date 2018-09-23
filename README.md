@@ -61,7 +61,7 @@ are in `/var/lib/transmission-daemon/downloads`, and partial downloads are in
 
     The 'command' (if provided and valid) will be run instead of transmission
 
-ENVIRONMENT VARIABLES (only available with `docker run`)
+ENVIRONMENT VARIABLES
 
  * `TRUSER` - Set the username for transmission auth (default 'admin')
  * `TRPASSWD` - Set the password for transmission auth (default 'admin')
