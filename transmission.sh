@@ -19,6 +19,35 @@
 set -o nounset                              # Treat unset variables as an error
 
 dir="/var/lib/transmission-daemon"
+[[ -d $dir/downloads ]] || mkdir -p $dir/downloads
+[[ -d $dir/incomplete ]] || mkdir -p $dir/incomplete
+[[ -d $dir/info/blocklists ]] || mkdir -p $dir/info/blocklists
+[[ -r $dir/info/settings.json ]] || cat >$dir/info/settings.json <<-EOF
+	{
+	    "blocklist-enabled": 0,
+	    "dht-enabled": true,
+	    "download-dir": "/var/lib/transmission-daemon/downloads",
+	    "incomplete-dir": "/var/lib/transmission-daemon/incomplete",
+	    "incomplete-dir-enabled": true,
+	    "download-limit": 100,
+	    "download-limit-enabled": 0,
+	    "encryption": 1,
+	    "max-peers-global": 200,
+	    "peer-port": 51413,
+	    "peer-socket-tos": "lowcost",
+	    "pex-enabled": 1,
+	    "port-forwarding-enabled": 0,
+	    "queue-stalled-enabled": true,
+	    "ratio-limit-enabled": true,
+	    "rpc-authentication-required": 1,
+	    "rpc-password": "transmission",
+	    "rpc-port": 9091,
+	    "rpc-username": "transmission",
+	    "rpc-whitelist": "127.0.0.1",
+	    "upload-limit": 100,
+	    "upload-limit-enabled": 0
+	}
+	EOF
 
 ### timezone: Set the timezone for the container
 # Arguments:
