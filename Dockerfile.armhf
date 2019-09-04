@@ -1,8 +1,8 @@
-FROM balenalib/armv7hf-alpine
+FROM arm32v6/alpine
+COPY qemu-arm-static /usr/bin/
 MAINTAINER David Personette <dperson@gmail.com>
 
 # Install transmission
-RUN ["cross-build-start"]
 RUN apk --no-cache --no-progress upgrade && \
     apk --no-cache --no-progress add bash curl shadow sed tini \
                 transmission-daemon tzdata && \
@@ -37,7 +37,6 @@ RUN apk --no-cache --no-progress upgrade && \
     /bin/echo -e '    "upload-limit-enabled": 0\n}' >>$file && \
     chown -Rh transmission. $dir && \
     rm -rf /tmp/*
-RUN ["cross-build-end"]
 
 COPY transmission.sh /usr/bin/
 
