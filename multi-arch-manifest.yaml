@@ -1,0 +1,16 @@
+image: dperson/transmission:latest
+manifests:
+  - image: dperson/transmission:amd64
+    platform:
+      architecture: amd64
+      os: linux
+  - image: dperson/transmission:aarch64
+    platform:
+      architecture: arm64
+      os: linux
+      variant: v8
+  - image: dperson/transmission:armhf
+    platform:
+      architecture: arm
+      os: linux
+      variant: v6
