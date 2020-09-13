@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:buster
 MAINTAINER David Personette <dperson@dperson.com>
 
 # Install transmission
